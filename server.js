@@ -6,6 +6,7 @@ const app = express();
 // connect to DB
 connectDB();
 
+// Define Routes
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/posts", require("./routes/api/posts"));
