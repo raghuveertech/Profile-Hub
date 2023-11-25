@@ -4,7 +4,7 @@ const router = express.Router();
 
 // @route      GET api/posts
 // @desc       Test route
-// @accsss     Public
+// @access     Public
 
 router.get("/", (req, res) => {
   res.send("Posts");
