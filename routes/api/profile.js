@@ -5,11 +5,11 @@ const Profile = require("./../../models/Profile");
 const User = require("./../../models/User");
 const router = express.Router();
 
-// @route      GET api/profile/me
+// @route      GET api/profile
 // @desc       Get current user's profile
 // @access     Private
 
-router.get("/me", authenticate, async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       "user",
@@ -103,5 +103,44 @@ router.post(
     }
   }
 );
+
+// @route      GET api/profile/all
+// @desc       list of all profiles
+// @access     Public
+
+router.get("/all", async (req, res) => {
+  try {
+    const allProfiles = await Profile.find().populate("user", [
+      "name",
+      "avatar",
+    ]);
+    res.json(allProfiles);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route      GET api/profile/userId
+// @desc       Single Profile by UserId
+// @access     Public
+
+router.get("/:userId", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.userId,
+    }).populate("user", ["name", "avatar"]);
+    if (!profile) {
+      return res.status(400).json({ message: "Profile Not Found" });
+    }
+    res.json(profile);
+  } catch (error) {
+    console.log(error);
+    if (error.kind === "ObjectId") {
+      return res.status(400).json({ message: "Profile Not Found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
