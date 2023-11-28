@@ -116,12 +116,12 @@ router.get("/all", async (req, res) => {
     ]);
     res.json(allProfiles);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).send("Server Error");
   }
 });
 
-// @route      GET api/profile/userId
+// @route      GET api/profile/:userId
 // @desc       Single Profile by UserId
 // @access     Public
 
@@ -135,10 +135,110 @@ router.get("/:userId", async (req, res) => {
     }
     res.json(profile);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     if (error.kind === "ObjectId") {
       return res.status(400).json({ message: "Profile Not Found" });
     }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route      DELETE api/profile
+// @desc       Delete profile, user & posts
+// @access     Private
+
+router.delete("/", authenticate, async (req, res) => {
+  try {
+    // @todo - remove user's posts
+    // Remove Profile
+    await Profile.findOneAndDelete({
+      user: req.user.id,
+    });
+    // Remove User
+    await User.findOneAndDelete({
+      _id: req.user.id,
+    });
+
+    return res.json({ message: "Account Deleted" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route      PUT api/profile/experience
+// @desc       add/update experience to user's profile
+// @access     Private
+
+router.put(
+  "/experience",
+  [
+    authenticate,
+    [
+      check("title", "Title is required").not().isEmpty(),
+      check("company", "Company is required").not().isEmpty(),
+      check("from", "From date is required").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { id, title, company, location, from, to, current, description } =
+      req.body;
+
+    const postedExp = {
+      id,
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+      if (!postedExp.id) {
+        profile.experience.unshift(postedExp);
+      } else {
+        profile.experience = profile.experience.map((exp) => {
+          console.log("exp.id", exp.id);
+          console.log("postedExp.id", postedExp.id);
+          if (exp.id === postedExp.id) {
+            exp = postedExp;
+          }
+          return exp;
+        });
+      }
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+);
+
+// @route      DELETE api/profile/experience/:experienceId
+// @desc       Delete Experience of user profile
+// @access     Private
+
+router.delete("/experience/:experienceId", authenticate, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    const experienceId = req.params.experienceId;
+
+    profile.experience = profile.experience.filter((exp) => {
+      return exp.id !== experienceId;
+    });
+
+    await profile.save();
+    return res.json(profile);
+  } catch (error) {
+    console.log(error.message);
     res.status(500).send("Server Error");
   }
 });
