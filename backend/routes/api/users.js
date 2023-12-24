@@ -91,4 +91,76 @@ router.post(
   }
 );
 
+/*
+  @route     /api/users/login
+  @method    POST - user login
+  @accesss   PUBLIC
+*/
+
+router.post(
+  "/login",
+  [
+    check("email", "Please enter valid email").isEmail(),
+    check("password", "Please enter a password").not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+      });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+      // check if user already exists
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return res.status(400).json({
+          errors: [
+            {
+              msg: "Invalid Credentials",
+            },
+          ],
+        });
+      }
+
+      // compare passwords
+      const passwordsMatch = await bcryptjs.compare(password, user.password);
+      if (!passwordsMatch) {
+        return res.status(400).json({
+          errors: [
+            {
+              msg: "Invalid Credentials",
+            },
+          ],
+        });
+      }
+
+      // send json web token
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecretKey"),
+        { expiresIn: 3600000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token: token });
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        error: "Something went wrong",
+      });
+    }
+  }
+);
+
 module.exports = router;

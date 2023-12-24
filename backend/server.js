@@ -1,6 +1,5 @@
 const express = require("express");
 const connectDB = require("./config/db");
-const authRouter = require("./routes/api/auth");
 const usersRouter = require("./routes/api/users");
 const profileRouter = require("./routes/api/profile");
 const postsRouter = require("./routes/api/posts");
@@ -14,7 +13,6 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // include routes
-app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/posts", postsRouter);
