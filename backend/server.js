@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const connectDB = require("./config/db");
 const usersRouter = require("./routes/api/users");
 const profileRouter = require("./routes/api/profile");
@@ -11,6 +12,9 @@ connectDB();
 
 // initialise middleware
 app.use(express.json({ extended: false }));
+
+// Serving static files from the 'uploads' directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // include routes
 app.use("/api/users", usersRouter);
