@@ -7,7 +7,6 @@ const ProfileSchema = new mongoose.Schema({
   },
   company: {
     type: String,
-    required: true,
   },
   website: {
     type: String,
@@ -17,11 +16,9 @@ const ProfileSchema = new mongoose.Schema({
   },
   designation: {
     type: String,
-    required: true,
   },
   skills: {
     type: [String],
-    required: true,
   },
   bio: {
     type: String,
@@ -102,6 +99,11 @@ const ProfileSchema = new mongoose.Schema({
     instagram: {
       type: String,
     },
+  },
+  profilepicture: {
+    filename: { type: String },
+    path: { type: String },
+    size: { type: String },
   },
   date: {
     type: Date,

@@ -3,7 +3,6 @@ const multer = require("multer");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
-const ProfilePicture = require("../../models/ProfilePicture");
 const router = express.Router();
 const authenticate = require("./../../middleware/authenticate");
 
@@ -181,28 +180,68 @@ router.post(
         },
       };
 
-      const existingProfilePicture = await ProfilePicture.findOne({
+      const existingProfile = await Profile.findOne({
         user: userId,
       });
 
-      if (existingProfilePicture) {
-        await ProfilePicture.findOneAndUpdate(
+      if (existingProfile) {
+        await Profile.findOneAndUpdate(
           { user: userId },
           { $set: profilePictureData },
           { new: true }
         );
-        return res.status(200).send("File uploaded successfully!");
+        res.status(200).send("File uploaded successfully!");
       }
-
-      // Create a new instance of File model to store file metadata in MongoDB
-      const profilePicture = new ProfilePicture(profilePictureData);
-
-      await profilePicture.save();
-      res.status(200).send("File uploaded successfully!");
     } catch (error) {
       res.status(500).send(error.message);
     }
   }
 );
+
+/*
+  @route     /api/profile/all
+  @method    GET - get all profiles
+  @accesss   PUBLIC
+*/
+
+router.get("/all", async (req, res) => {
+  try {
+    const allProfiles = await Profile.find().populate("user", [
+      "name",
+      "avatar",
+      "email",
+    ]);
+    res.json(allProfiles);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
+  @route     /api/profile/:user_id
+  @method    GET - get single user profile
+  @accesss   PUBLIC
+*/
+
+router.get("/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar", "email"]);
+
+    if (!profile) {
+      return res.status(400).send("Profile Not Found");
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.log(err);
+    if (err.kind == "ObjectId") {
+      return res.status(400).send("Profile Not Found");
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
