@@ -19,11 +19,9 @@ router.get("/", authenticate, async (req, res) => {
   try {
     const basicInfo = await User.findById(userId).select("-password");
     const profileInfo = await Profile.findOne({ user: userId });
-    const profilePicture = await ProfilePicture.findOne({ user: userId });
 
     console.log("basicInfo", basicInfo);
     console.log("profileInfo", profileInfo);
-    console.log("profilePicture", profilePicture);
 
     let userInfo = basicInfo;
 
@@ -31,7 +29,6 @@ router.get("/", authenticate, async (req, res) => {
       userInfo = {
         basicInfo: basicInfo,
         profileInfo: profileInfo,
-        profilePicture: profilePicture,
       };
     }
     res.json(userInfo);
@@ -240,6 +237,25 @@ router.get("/:user_id", async (req, res) => {
     if (err.kind == "ObjectId") {
       return res.status(400).send("Profile Not Found");
     }
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
+  @route     /api/profile
+  @method    DELETE - delete user and profile
+  @accesss   PRIVATE
+*/
+
+router.delete("/", authenticate, async (req, res) => {
+  const userData = req.userData;
+  const userId = userData.id;
+  try {
+    await Profile.findOneAndDelete({ user: userId });
+    await User.findByIdAndDelete(userId);
+    res.json({ msg: "User Profile Deleted" });
+  } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 });
