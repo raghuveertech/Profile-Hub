@@ -140,7 +140,7 @@ router.post(
 
 /*
   @route     /api/profile/dp
-  @method    POST - Add/Replace profile picture
+  @method    PUT - Add/Replace profile picture
   @accesss   PRIVATE
 */
 
@@ -156,7 +156,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post(
+router.put(
   "/dp",
   [authenticate, upload.single("profilepicture")],
   async (req, res) => {
@@ -259,5 +259,77 @@ router.delete("/", authenticate, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+/*
+  @route     /api/profile/experience
+  @method    PUT - Add/Update experience
+  @accesss   PRIVATE
+*/
+
+router.put(
+  "/experience",
+  [
+    authenticate,
+    [
+      check("designation", "Designation is required").not().isEmpty(),
+      check("company", "Company is required").not().isEmpty(),
+      check("from", "From Date is required").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+      });
+    }
+    try {
+      const userData = req.userData;
+      const userId = userData.id;
+      const profile = await Profile.findOne({ user: userId });
+
+      const {
+        id,
+        designation,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description,
+      } = req.body;
+
+      const experience = {};
+
+      if (designation) experience.designation = designation;
+      if (company) experience.company = company;
+      if (location) experience.location = location;
+      if (from) experience.from = from;
+      if (to) experience.to = to;
+      if (current) experience.current = current;
+      if (description) experience.description = description;
+
+      if (id) {
+        profile.experience = profile.experience.map((experienceItem) => {
+          if (experienceItem.id === id) {
+            experienceItem = experience;
+          }
+          return experienceItem;
+        });
+      } else {
+        profile.experience.push(experience);
+      }
+      const updatedProfile = await Profile.findOneAndUpdate(
+        { user: userId },
+        { $set: profile },
+        { new: true }
+      );
+      res.send(updatedProfile);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 module.exports = router;
