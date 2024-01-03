@@ -308,7 +308,6 @@ router.put(
       if (to) experience.to = to;
       if (current) experience.current = current;
       if (description) experience.description = description;
-
       if (id) {
         profile.experience = profile.experience.map((experienceItem) => {
           if (experienceItem.id === id) {
@@ -319,17 +318,35 @@ router.put(
       } else {
         profile.experience.push(experience);
       }
-      const updatedProfile = await Profile.findOneAndUpdate(
-        { user: userId },
-        { $set: profile },
-        { new: true }
-      );
-      res.send(updatedProfile);
+      await profile.save();
+      res.send(profile);
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");
     }
   }
 );
+
+/*
+  @route     /api/profile/experience/:exp_id
+  @method    DELETE - Delete experience
+  @accesss   PRIVATE
+*/
+router.delete("/experience/:exp_id", authenticate, async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const profile = await Profile.findOne({ user: userId });
+    const expId = req.params.exp_id;
+    profile.experience = profile.experience.filter((experienceItem) => {
+      return expId !== experienceItem.id;
+    });
+    await profile.save();
+    res.json(profile);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
