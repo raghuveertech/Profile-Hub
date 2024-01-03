@@ -419,4 +419,31 @@ router.put(
   }
 );
 
+/*
+  @route     /api/profile/education/:edu_id
+  @method    DELETE - Delete education
+  @accesss   PRIVATE
+*/
+
+router.delete("/education/:edu_id", authenticate, async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const eduId = req.params.edu_id;
+
+    const profile = await Profile.findOne({ user: userId });
+
+    profile.education = profile.education.filter((educationItem) => {
+      return educationItem.id !== eduId;
+    });
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
