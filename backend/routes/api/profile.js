@@ -265,7 +265,6 @@ router.delete("/", authenticate, async (req, res) => {
   @method    PUT - Add/Update experience
   @accesss   PRIVATE
 */
-
 router.put(
   "/experience",
   [
@@ -348,5 +347,76 @@ router.delete("/experience/:exp_id", authenticate, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+/*
+  @route     /api/profile/education
+  @method    PUT - Add/Update education
+  @accesss   PRIVATE
+*/
+
+router.put(
+  "/education",
+  [
+    authenticate,
+    [
+      check("school", "School is required").not().isEmpty(),
+      check("degree", "Degree is required").not().isEmpty(),
+      check("fieldofstudy", "Field of Study is required").not().isEmpty(),
+      check("from", "From Date is required").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const userData = req.userData;
+      const userId = userData.id;
+
+      const profile = await Profile.findOne({ user: userId });
+
+      const {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description,
+        id,
+      } = req.body;
+
+      const education = {};
+      if (school) education.school = school;
+      if (degree) education.degree = degree;
+      if (fieldofstudy) education.fieldofstudy = fieldofstudy;
+      if (from) education.from = from;
+      if (to) education.to = to;
+      if (current) education.current = current;
+      if (description) education.description = description;
+      if (id) education.id = id;
+
+      if (id) {
+        profile.education = profile.education.map((educationItem) => {
+          if (educationItem.id === id) {
+            educationItem = education;
+          }
+          return educationItem;
+        });
+      } else {
+        profile.education.push(education);
+      }
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 module.exports = router;
