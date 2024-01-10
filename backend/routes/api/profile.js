@@ -1,4 +1,6 @@
 const express = require("express");
+const request = require("request");
+const config = require("config");
 const multer = require("multer");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
@@ -440,6 +442,38 @@ router.delete("/education/:edu_id", authenticate, async (req, res) => {
     await profile.save();
 
     res.json(profile);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
+  @route     /api/profile/github/:username
+  @method    GET - Get github repositories of user
+  @accesss   PUBLIC
+*/
+
+router.get("/github/:username", (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=20&sort=created:asc&client_id=${config.get(
+        "githubClientId"
+      )}&client_secret=${config.get("githubSecretKey")}`,
+      method: "GET",
+      headers: { "user-agent": "node.js" },
+    };
+    request(options, (error, response, body) => {
+      if (error) {
+        console.log(error);
+        return res.status(400).send(error);
+      }
+      if (response.statusCode === 200) {
+        res.json(JSON.parse(body));
+      }
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
