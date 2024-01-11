@@ -5,8 +5,9 @@ const multer = require("multer");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
-const router = express.Router();
 const authenticate = require("./../../middleware/authenticate");
+
+const router = express.Router();
 
 /*
   @route     /api/profile
