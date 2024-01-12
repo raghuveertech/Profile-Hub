@@ -26,6 +26,7 @@ const PostSchema = new mongoose.Schema({
         ref: "users",
       },
       text: String,
+      username: String,
     },
   ],
   date: {
