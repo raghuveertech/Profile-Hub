@@ -117,4 +117,54 @@ router.delete("/:post_id", authenticate, async (req, res) => {
   }
 });
 
+/*
+  @route     /api/posts/like/:post_id
+  @method    PUT - Like a post by user
+  @accesss   PRIVATE
+*/
+router.put("/like/:post_id", authenticate, async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const post = await Post.findById(req.params.post_id);
+    if (
+      !(
+        post.likes.filter((like) => {
+          return like.user.toString() === userId;
+        }).length > 0
+      )
+    ) {
+      post.likes.push({
+        user: userId,
+      });
+    }
+    await post.save();
+    res.json({ likes: post.likes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
+  @route     /api/posts/unlike/:post_id
+  @method    PUT - unlike a post by user
+  @accesss   PRIVATE
+*/
+router.put("/unlike/:post_id", authenticate, async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const post = await Post.findById(req.params.post_id);
+    post.likes = post.likes.filter((like) => {
+      return like.user.toString() !== userId;
+    });
+    await post.save();
+    res.json({ likes: post.likes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
