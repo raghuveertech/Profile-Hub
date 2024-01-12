@@ -9,7 +9,7 @@ const Profile = require("./../../models/Profile");
 
 /*
   @route     /api/posts
-  @method    POST - Create a New Post
+  @method    POST - Create/update a Post
   @accesss   PRIVATE
 */
 
@@ -71,7 +71,7 @@ router.get("/", async (req, res) => {
 
 /*
   @route     /api/posts/:post_id
-  @method    GET - Get all blog posts
+  @method    GET - Get single post
   @accesss   PUBLIC
 */
 
@@ -89,6 +89,28 @@ router.get("/:post_id", async (req, res) => {
     ]);
 
     res.json({ post: singlePost, userInfo: userProfile });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
+  @route     /api/posts/:post_id
+  @method    DELETE - Delete Post
+  @accesss   PRIVATE
+*/
+
+router.delete("/:post_id", authenticate, async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const postId = req.params.post_id;
+    const post = await Post.findById(postId);
+    if (userId === post.user.toString()) {
+      await Post.findByIdAndDelete(postId);
+      return res.send("Post Deleted Successfully");
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
