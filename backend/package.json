@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "backend": "node --watch server"
+    "backend": "node --watch server",
+    "frontend": "npm start --prefix ../frontend",
+    "dev": "concurrently \" npm run backend \" \" npm run frontend \" "
   },
   "author": "",
   "license": "ISC",
