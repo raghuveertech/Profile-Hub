@@ -322,7 +322,8 @@ button {
   margin: 0 0.25rem;
 }
 
-.navbar a:hover {
+.navbar a:hover,
+.navbar a.active {
   color: var(--primary-color);
 }
 
