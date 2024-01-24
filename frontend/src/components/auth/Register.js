@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
-
-import { setAlert } from "../../redux/alert/actions";
+import { registerUser } from "../../redux/register/actions";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -73,14 +71,8 @@ const Register = () => {
     });
 
     if (!nameError && !emailError && !passwordError && !password2Error) {
-      const body = JSON.stringify(formData);
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const res = await axios.post("/api/users", body, config);
-      console.log(res);
+      const { name, email, password } = formData;
+      dispatch(registerUser(name, email, password));
     }
   };
 
