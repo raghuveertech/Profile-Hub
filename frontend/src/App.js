@@ -5,6 +5,7 @@ import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Developers from "./components/Developers";
+import Alert from "./components/layout/Alert";
 import Blog from "./components/Blog";
 import "./styles/App.css";
 
@@ -12,6 +13,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Navbar />
+      <Alert />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
