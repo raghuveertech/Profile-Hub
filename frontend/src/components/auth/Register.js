@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { registerUser } from "../../redux/register/actions";
 
 const Register = () => {
-  const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,7 +68,7 @@ const Register = () => {
 
     if (!nameError && !emailError && !passwordError && !password2Error) {
       const { name, email, password } = formData;
-      dispatch(registerUser(name, email, password));
+      console.log(name, email, password);
     }
   };
 
