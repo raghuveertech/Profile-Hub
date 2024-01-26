@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Alert from "../layout/Alert";
+import { registerUser } from "../../api-methods";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -78,13 +78,8 @@ const Register = () => {
     if (!nameError && !emailError && !passwordError && !password2Error) {
       const { name, email, password } = formData;
       const body = JSON.stringify({ name, email, password });
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
       try {
-        const response = await axios.post("/api/users/register", body, config);
+        const response = await registerUser(body);
         const token = response.data.token;
         if (token) {
           setRegistrationErrors([]);

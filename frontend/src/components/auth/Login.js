@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Alert from "../layout/Alert";
+import { loginUser } from "../../api-methods";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -52,13 +53,8 @@ const Login = () => {
     });
     if (!emailError && !passwordError) {
       const body = JSON.stringify(formData);
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
       try {
-        const response = await axios.post("/api/users/login", body, config);
+        const response = await loginUser(body);
         const token = response.data.token;
         if (token) {
           setLoginErrors([]);
