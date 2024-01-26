@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Alert from "../layout/Alert";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,12 +11,15 @@ const Register = () => {
     password2: "",
   });
 
-  const [errors, setErrors] = useState({
+  const [validationErrors, setValidationErrors] = useState({
     nameError: "",
     emailError: "",
     passwordError: "",
     password2Error: "",
   });
+
+  const [success, setSuccess] = useState(false);
+  const [registationErrors, setRegistrationErrors] = useState([]);
 
   const changeHandler = (e) => {
     setFormData((prevFormData) => {
@@ -45,7 +50,11 @@ const Register = () => {
     if (!password) {
       passwordError = "Password is required";
     } else {
-      passwordError = "";
+      if (password.length < 6) {
+        passwordError = "Password should be atleast 6 characters";
+      } else {
+        passwordError = "";
+      }
     }
     if (!password2) {
       password2Error = "Confirm Password is required";
@@ -56,9 +65,9 @@ const Register = () => {
         password2Error = "";
       }
     }
-    setErrors((prevErrors) => {
+    setValidationErrors((prevValidationErrors) => {
       return {
-        ...prevErrors,
+        ...prevValidationErrors,
         nameError: nameError,
         emailError: emailError,
         passwordError: passwordError,
@@ -68,15 +77,54 @@ const Register = () => {
 
     if (!nameError && !emailError && !passwordError && !password2Error) {
       const { name, email, password } = formData;
-      console.log(name, email, password);
+      const body = JSON.stringify({ name, email, password });
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      try {
+        const response = await axios.post("/api/users/register", body, headers);
+        const token = response.data.token;
+        if (token) {
+          setSuccess(true);
+          // redirect to profile dashboard
+        }
+      } catch (error) {
+        console.log("error", error);
+        if (error.response.data.errors) {
+          const errors = error.response.data.errors;
+          setRegistrationErrors(errors);
+        } else if (error.response.status === 500) {
+          setRegistrationErrors([
+            { msg: "Something went wrong. Please try later." },
+          ]);
+        }
+      }
     }
   };
 
   const { name, email, password, password2 } = formData;
-  const { nameError, emailError, passwordError, password2Error } = errors;
+  const { nameError, emailError, passwordError, password2Error } =
+    validationErrors;
 
   return (
     <section className="container">
+      {success && (
+        <Alert
+          alertType={"success"}
+          alertMsg={
+            "Registration Successful. You will be redirected to profile page."
+          }
+        />
+      )}
+
+      {registationErrors && registationErrors.length > 0
+        ? registationErrors.map((error) => {
+            return <Alert alertType={"danger"} alertMsg={error.msg} />;
+          })
+        : null}
+
       <h1 className="large text-primary">Sign Up</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Create Your Account

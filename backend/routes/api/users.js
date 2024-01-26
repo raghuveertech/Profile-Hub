@@ -8,13 +8,13 @@ const router = express.Router();
 const User = require("./../../models/User");
 
 /*
-  @route     /api/users
+  @route     /api/users/register
   @method    POST - registering user
   @accesss   PUBLIC
 */
 
 router.post(
-  "/",
+  "/register",
   [
     check("name", "Name is required").not().isEmpty(),
     check("email", "Please enter valid email").isEmail(),
