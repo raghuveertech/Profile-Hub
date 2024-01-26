@@ -78,20 +78,20 @@ const Register = () => {
     if (!nameError && !emailError && !passwordError && !password2Error) {
       const { name, email, password } = formData;
       const body = JSON.stringify({ name, email, password });
-      const headers = {
+      const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
       try {
-        const response = await axios.post("/api/users/register", body, headers);
+        const response = await axios.post("/api/users/register", body, config);
         const token = response.data.token;
         if (token) {
+          setRegistrationErrors([]);
           setSuccess(true);
           // redirect to profile dashboard
         }
       } catch (error) {
-        console.log("error", error);
         if (error.response.data.errors) {
           const errors = error.response.data.errors;
           setRegistrationErrors(errors);

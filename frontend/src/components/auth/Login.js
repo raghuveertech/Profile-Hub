@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Alert from "../layout/Alert";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,10 +9,12 @@ const Login = () => {
     password: "",
   });
 
-  const [errors, setErrors] = useState({
+  const [validationErrors, setValidationErrors] = useState({
     emailError: "",
     passwordError: "",
   });
+
+  const [loginErrors, setLoginErrors] = useState([]);
 
   const changeHandler = (e) => {
     setFormData((prevFormData) => {
@@ -40,9 +43,9 @@ const Login = () => {
       passwordError = "";
     }
 
-    setErrors((prevErrors) => {
+    setValidationErrors((prevValidationErrors) => {
       return {
-        ...prevErrors,
+        ...prevValidationErrors,
         emailError: emailError,
         passwordError: passwordError,
       };
@@ -54,16 +57,34 @@ const Login = () => {
           "Content-Type": "application/json",
         },
       };
-      const res = await axios.post("/api/users/login", body, config);
-      console.log(res);
+      try {
+        const response = await axios.post("/api/users/login", body, config);
+        const token = response.data.token;
+        if (token) {
+          setLoginErrors([]);
+          // redirect to profile dashboard
+        }
+      } catch (error) {
+        if (error.response.data.errors) {
+          const errors = error.response.data.errors;
+          setLoginErrors(errors);
+        } else if (error.response.status === 500) {
+          setLoginErrors([{ msg: "Something went wrong. Please try later." }]);
+        }
+      }
     }
   };
 
   const { email, password } = formData;
-  const { emailError, passwordError } = errors;
+  const { emailError, passwordError } = validationErrors;
 
   return (
     <section className="container">
+      {loginErrors && loginErrors.length > 0
+        ? loginErrors.map((error) => {
+            return <Alert alertType={"danger"} alertMsg={error.msg} />;
+          })
+        : null}
       <h1 className="large text-primary">Sign In</h1>
       <form className="form" onSubmit={submitHandler}>
         <div className="form-group">
