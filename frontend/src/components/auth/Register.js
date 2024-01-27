@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, redirect } from "react-router-dom";
 import Alert from "../layout/Alert";
 import { registerUser } from "../../api-methods";
+import { TokenContext } from "../../App";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,8 @@ const Register = () => {
 
   const [success, setSuccess] = useState(false);
   const [registationErrors, setRegistrationErrors] = useState([]);
+
+  const { setToken } = useContext(TokenContext);
 
   const changeHandler = (e) => {
     setFormData((prevFormData) => {
@@ -84,7 +87,9 @@ const Register = () => {
         if (token) {
           setRegistrationErrors([]);
           setSuccess(true);
+          setToken(token);
           // redirect to profile dashboard
+          redirect("/");
         }
       } catch (error) {
         if (error.response.data.errors) {

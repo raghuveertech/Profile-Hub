@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../layout/Alert";
 import { loginUser } from "../../api-methods";
+import { TokenContext } from "../../App";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +16,10 @@ const Login = () => {
   });
 
   const [loginErrors, setLoginErrors] = useState([]);
+
+  const navigate = useNavigate();
+
+  const { setToken } = useContext(TokenContext);
 
   const changeHandler = (e) => {
     setFormData((prevFormData) => {
@@ -58,7 +62,9 @@ const Login = () => {
         const token = response.data.token;
         if (token) {
           setLoginErrors([]);
+          setToken(token);
           // redirect to profile dashboard
+          navigate("/profile/dashboard");
         }
       } catch (error) {
         if (error.response.data.errors) {

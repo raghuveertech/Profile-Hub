@@ -327,6 +327,10 @@ button {
   color: var(--primary-color);
 }
 
+.navbar a i {
+  margin-right: 5px;
+}
+
 .navbar .welcome span {
   margin-right: 0.6rem;
 }
