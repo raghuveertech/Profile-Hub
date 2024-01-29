@@ -6,9 +6,9 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Developers from "./components/Developers";
 import Blog from "./components/Blog";
-import UpdateProfile from "./components/User/UpdateProfile";
-import Dashboard from "./components/User/Dashboard";
-import Logout from "./components/User/Logout";
+import UpdateProfile from "./components/Authenticated/UpdateProfile";
+import Dashboard from "./components/Authenticated/Dashboard";
+import Logout from "./components/Authenticated/Logout";
 import "./styles/App.css";
 
 export const TokenContext = React.createContext();
