@@ -1,7 +1,7 @@
 import axios from "axios";
 import apis from "./api-endpoints";
 
-const { registration, login } = apis;
+const { registrationAPI, loginAPI, getProfileInfoAPI } = apis;
 
 // configs
 const config = {
@@ -9,10 +9,16 @@ const config = {
     "Content-Type": "application/json",
   },
 };
-const authConfig = {
+const authConfigGET = {
+  headers: {
+    "x-auth-token": localStorage.token,
+  },
+};
+
+const authConfigPOST = {
   headers: {
     "Content-Type": "application/json",
-    token: localStorage.token,
+    "x-auth-token": localStorage.token,
   },
 };
 
@@ -21,13 +27,23 @@ const postMethod = async (url, body, config) => {
   return response;
 };
 
+const getMethod = async (url, config) => {
+  const response = await axios.get(url, config);
+  return response;
+};
+
 // methods
 export const registerUser = async (body) => {
-  const response = await postMethod(registration, body, config);
+  const response = await postMethod(registrationAPI, body, config);
   return response;
 };
 
 export const loginUser = async (body) => {
-  const response = await postMethod(login, body, config);
+  const response = await postMethod(loginAPI, body, config);
+  return response;
+};
+
+export const getProfileInfo = async () => {
+  const response = await getMethod(getProfileInfoAPI, authConfigGET);
   return response;
 };

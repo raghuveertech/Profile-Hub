@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Authenticated from ".";
+import { getProfileInfo } from "../../api-methods";
+import { formatDate } from "../../utils";
 
 const Dashboard = () => {
+  const [profile, setProfile] = useState({});
+  useEffect(() => {
+    async function getProfileData() {
+      const response = await getProfileInfo();
+      setProfile(response.data);
+    }
+    getProfileData();
+  }, []);
+  console.log(profile);
+  const { basicInfo, profileInfo } = profile;
+  const { name } = basicInfo;
   return (
     <Authenticated>
       <section class="container">
         <h1 class="large text-primary">Dashboard</h1>
         <p class="lead">
-          <i class="fas fa-user"></i> Welcome John Doe
+          <i class="fas fa-user"></i> Welcome {name}
         </p>
         <div class="dash-buttons">
           <Link to="/profile/edit" class="btn btn-light">
@@ -22,7 +35,7 @@ const Dashboard = () => {
           </a>
         </div>
 
-        <h2 class="my-2">Experience Credentials</h2>
+        <h2 class="my-2">Experience</h2>
         <table class="table">
           <thead>
             <tr>
@@ -33,44 +46,52 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Tech Guy Web Solutions</td>
-              <td class="hide-sm">Senior Developer</td>
-              <td class="hide-sm">02-03-2009 - 01-02-2014</td>
-              <td>
-                <button class="btn btn-danger">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Traversy Media</td>
-              <td class="hide-sm">Instructor & Developer</td>
-              <td class="hide-sm">02-03-2015 - Now</td>
-              <td>
-                <button class="btn btn-danger">Delete</button>
-              </td>
-            </tr>
+            {profileInfo.experience.map((exp) => {
+              return (
+                <tr>
+                  <td>{exp.company}</td>
+                  <td class="hide-sm">{exp.designation}</td>
+                  <td class="hide-sm">
+                    {formatDate(exp.from)} -{" "}
+                    {exp.current ? "Current" : formatDate(exp.to)}
+                  </td>
+                  <td>
+                    <button class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
-        <h2 class="my-2">Education Credentials</h2>
+        <h2 class="my-2">Education</h2>
         <table class="table">
           <thead>
             <tr>
               <th>School</th>
               <th class="hide-sm">Degree</th>
+              <th class="hide-sm">Field of Study</th>
               <th class="hide-sm">Years</th>
               <th />
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Northern Essex</td>
-              <td class="hide-sm">Associates</td>
-              <td class="hide-sm">02-03-2007 - 01-02-2009</td>
-              <td>
-                <button class="btn btn-danger">Delete</button>
-              </td>
-            </tr>
+            {profileInfo.education.map((edu) => {
+              return (
+                <tr>
+                  <td>{edu.school}</td>
+                  <td class="hide-sm">{edu.degree}</td>
+                  <td class="hide-sm">{edu.fieldofstudy}</td>
+                  <td class="hide-sm">
+                    {formatDate(edu.from)} -{" "}
+                    {edu.current ? "Current" : formatDate(edu.to)}
+                  </td>
+                  <td>
+                    <button class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
