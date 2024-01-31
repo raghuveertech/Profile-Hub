@@ -1,19 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Authenticated from ".";
 import { getProfileInfo } from "../../api-methods";
+import { TokenContext } from "../../App";
 import { formatDate } from "../../utils";
 
 const Dashboard = (props) => {
   const { profile, setProfile } = props;
+
+  const { token } = useContext(TokenContext);
+
   useEffect(() => {
-    async function getProfileData() {
-      const response = await getProfileInfo();
-      console.log("response.data", response.data);
-      setProfile(response.data);
+    if (token) {
+      async function getProfileData() {
+        const response = await getProfileInfo(token);
+        setProfile(response.data);
+      }
+      getProfileData();
     }
-    getProfileData();
-  }, []);
+  }, [token, setProfile]);
   const { basicInfo, profileInfo } = profile;
 
   return (

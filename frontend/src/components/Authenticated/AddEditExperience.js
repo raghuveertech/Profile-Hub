@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Authenticated from ".";
 import { modifyExperience } from "../../api-methods";
 import Alert from "../layout/Alert";
+import { TokenContext } from "../../App";
 
 const AddEditExperience = (props) => {
   const { setProfile, profile } = props;
@@ -33,6 +34,7 @@ const AddEditExperience = (props) => {
   const [experienceErrors, setExperienceErrors] = useState([]);
 
   const navigate = useNavigate();
+  const { token } = useContext(TokenContext);
 
   const changeHandler = (e) => {
     if (e.target.name === "current") {
@@ -131,7 +133,7 @@ const AddEditExperience = (props) => {
         description,
       });
       try {
-        const response = await modifyExperience(body);
+        const response = await modifyExperience(body, token);
         const profile = response.data;
         if (profile) {
           setExperienceErrors([]);

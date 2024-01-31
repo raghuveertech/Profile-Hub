@@ -10,19 +10,25 @@ const config = {
     "Content-Type": "application/json",
   },
 };
-const authConfigGET = {
-  headers: {
-    "x-auth-token": localStorage.token,
-  },
+
+const getAuthConfig = (token) => {
+  return {
+    headers: {
+      "x-auth-token": token,
+    },
+  };
 };
 
-const authConfigPOST = {
-  headers: {
-    "Content-Type": "application/json",
-    "x-auth-token": localStorage.token,
-  },
+const postAuthConfig = (token) => {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      "x-auth-token": token,
+    },
+  };
 };
 
+// common methods
 const postMethod = async (url, body, config) => {
   const response = await axios.post(url, body, config);
   return response;
@@ -38,7 +44,7 @@ const putMethod = async (url, body, config) => {
   return response;
 };
 
-// methods
+// specific API methods
 export const registerUser = async (body) => {
   const response = await postMethod(registrationAPI, body, config);
   return response;
@@ -49,12 +55,16 @@ export const loginUser = async (body) => {
   return response;
 };
 
-export const getProfileInfo = async () => {
-  const response = await getMethod(getProfileInfoAPI, authConfigGET);
+export const getProfileInfo = async (token) => {
+  const response = await getMethod(getProfileInfoAPI, getAuthConfig(token));
   return response;
 };
 
-export const modifyExperience = async (body) => {
-  const response = await putMethod(modifyExperienceAPI, body, authConfigPOST);
+export const modifyExperience = async (body, token) => {
+  const response = await putMethod(
+    modifyExperienceAPI,
+    body,
+    postAuthConfig(token)
+  );
   return response;
 };
