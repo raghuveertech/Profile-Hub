@@ -23,9 +23,6 @@ router.get("/", authenticate, async (req, res) => {
     const basicInfo = await User.findById(userId).select("-password");
     const profileInfo = await Profile.findOne({ user: userId });
 
-    console.log("basicInfo", basicInfo);
-    console.log("profileInfo", profileInfo);
-
     let userInfo = basicInfo;
 
     if (profileInfo) {
@@ -291,7 +288,7 @@ router.put(
       const profile = await Profile.findOne({ user: userId });
 
       const {
-        id,
+        _id,
         designation,
         company,
         location,
@@ -310,9 +307,9 @@ router.put(
       if (to) experience.to = to;
       if (current) experience.current = current;
       if (description) experience.description = description;
-      if (id) {
+      if (_id) {
         profile.experience = profile.experience.map((experienceItem) => {
-          if (experienceItem.id === id) {
+          if (experienceItem.id === _id) {
             experienceItem = experience;
           }
           return experienceItem;

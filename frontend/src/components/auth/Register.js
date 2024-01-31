@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../layout/Alert";
 import { registerUser } from "../../api-methods";
 import { TokenContext } from "../../App";
@@ -18,6 +18,8 @@ const Register = () => {
     passwordError: "",
     password2Error: "",
   });
+
+  const navigate = useNavigate();
 
   const [success, setSuccess] = useState(false);
   const [registationErrors, setRegistrationErrors] = useState([]);
@@ -89,7 +91,7 @@ const Register = () => {
           setSuccess(true);
           setToken(token);
           // redirect to profile dashboard
-          redirect("/");
+          navigate("/");
         }
       } catch (error) {
         if (error.response.data.errors) {

@@ -1,7 +1,8 @@
 import axios from "axios";
 import apis from "./api-endpoints";
 
-const { registrationAPI, loginAPI, getProfileInfoAPI } = apis;
+const { registrationAPI, loginAPI, getProfileInfoAPI, modifyExperienceAPI } =
+  apis;
 
 // configs
 const config = {
@@ -32,6 +33,11 @@ const getMethod = async (url, config) => {
   return response;
 };
 
+const putMethod = async (url, body, config) => {
+  const response = await axios.put(url, body, config);
+  return response;
+};
+
 // methods
 export const registerUser = async (body) => {
   const response = await postMethod(registrationAPI, body, config);
@@ -45,5 +51,10 @@ export const loginUser = async (body) => {
 
 export const getProfileInfo = async () => {
   const response = await getMethod(getProfileInfoAPI, authConfigGET);
+  return response;
+};
+
+export const modifyExperience = async (body) => {
+  const response = await putMethod(modifyExperienceAPI, body, authConfigPOST);
   return response;
 };

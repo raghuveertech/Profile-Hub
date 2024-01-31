@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <NavLink to="/">
+        <NavLink to={token ? "/profile/dashboard" : "/"}>
           <i className="fas fa-code"></i> Profile Hub
         </NavLink>
       </h1>

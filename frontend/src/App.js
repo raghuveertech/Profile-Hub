@@ -10,11 +10,13 @@ import UpdateProfile from "./components/Authenticated/UpdateProfile";
 import Dashboard from "./components/Authenticated/Dashboard";
 import Logout from "./components/Authenticated/Logout";
 import "./styles/App.css";
+import AddEditExperience from "./components/Authenticated/AddEditExperience";
 
 export const TokenContext = React.createContext();
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [profile, setProfile] = useState({});
 
   useEffect(() => {
     if (token) {
@@ -33,8 +35,21 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/developers" element={<Developers />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/profile/dashboard" element={<Dashboard />} />
+        <Route
+          path="/profile/dashboard"
+          element={<Dashboard setProfile={setProfile} profile={profile} />}
+        />
         <Route path="/profile/edit" element={<UpdateProfile />} />
+        <Route
+          path="/profile/modify-experience"
+          element={<AddEditExperience setProfile={setProfile} />}
+        />
+        <Route
+          path="/profile/modify-experience/:expId"
+          element={
+            <AddEditExperience setProfile={setProfile} profile={profile} />
+          }
+        />
         <Route path="/profile/logout" element={<Logout />} />
       </Routes>
     </TokenContext.Provider>

@@ -1,103 +1,114 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Authenticated from ".";
 import { getProfileInfo } from "../../api-methods";
 import { formatDate } from "../../utils";
 
-const Dashboard = () => {
-  const [profile, setProfile] = useState({});
+const Dashboard = (props) => {
+  const { profile, setProfile } = props;
   useEffect(() => {
     async function getProfileData() {
       const response = await getProfileInfo();
+      console.log("response.data", response.data);
       setProfile(response.data);
     }
     getProfileData();
   }, []);
-  console.log(profile);
   const { basicInfo, profileInfo } = profile;
-  const { name } = basicInfo;
+
   return (
     <Authenticated>
-      <section class="container">
-        <h1 class="large text-primary">Dashboard</h1>
-        <p class="lead">
-          <i class="fas fa-user"></i> Welcome {name}
+      <section className="container">
+        <h1 className="large text-primary">Dashboard</h1>
+        <p className="lead">
+          <i className="fas fa-user"></i> Welcome{" "}
+          {basicInfo ? basicInfo.name : ""}
         </p>
-        <div class="dash-buttons">
-          <Link to="/profile/edit" class="btn btn-light">
-            <i class="fas fa-user-circle text-primary"></i> Edit Profile
+        <div className="dash-buttons">
+          <Link to="/profile/edit" className="btn btn-light">
+            <i className="fas fa-user-circle text-primary"></i> Edit Profile
           </Link>
-          <a href="add-experience.html" class="btn btn-light">
-            <i class="fab fa-black-tie text-primary"></i> Add Experience
-          </a>
-          <a href="add-education.html" class="btn btn-light">
-            <i class="fas fa-graduation-cap text-primary"></i> Add Education
-          </a>
+          <Link to="/profile/modify-experience" className="btn btn-light">
+            <i className="fab fa-black-tie text-primary"></i> Add Experience
+          </Link>
+          <Link to="/profile/modify-education" className="btn btn-light">
+            <i className="fas fa-graduation-cap text-primary"></i> Add Education
+          </Link>
         </div>
 
-        <h2 class="my-2">Experience</h2>
-        <table class="table">
+        <h2 className="my-2">Experience</h2>
+        <table className="table">
           <thead>
             <tr>
               <th>Company</th>
-              <th class="hide-sm">Title</th>
-              <th class="hide-sm">Years</th>
+              <th className="hide-sm">Title</th>
+              <th className="hide-sm">Years</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {profileInfo.experience.map((exp) => {
-              return (
-                <tr>
-                  <td>{exp.company}</td>
-                  <td class="hide-sm">{exp.designation}</td>
-                  <td class="hide-sm">
-                    {formatDate(exp.from)} -{" "}
-                    {exp.current ? "Current" : formatDate(exp.to)}
-                  </td>
-                  <td>
-                    <button class="btn btn-danger">Delete</button>
-                  </td>
-                </tr>
-              );
-            })}
+            {profileInfo &&
+              profileInfo.experience.length > 0 &&
+              profileInfo.experience.map((exp) => {
+                return (
+                  <tr key={exp._id}>
+                    <td>{exp.company}</td>
+                    <td className="hide-sm">{exp.designation}</td>
+                    <td className="hide-sm">
+                      {formatDate(exp.from)} -{" "}
+                      {exp.current ? "Current" : formatDate(exp.to)}
+                    </td>
+                    <td>
+                      <Link
+                        to={`/profile/modify-experience/${exp._id}`}
+                        className="btn btn-dark"
+                      >
+                        Edit
+                      </Link>
+                      <button className="btn btn-danger">Delete</button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
 
-        <h2 class="my-2">Education</h2>
-        <table class="table">
+        <h2 className="my-2">Education</h2>
+        <table className="table">
           <thead>
             <tr>
               <th>School</th>
-              <th class="hide-sm">Degree</th>
-              <th class="hide-sm">Field of Study</th>
-              <th class="hide-sm">Years</th>
+              <th className="hide-sm">Degree</th>
+              <th className="hide-sm">Field of Study</th>
+              <th className="hide-sm">Years</th>
               <th />
             </tr>
           </thead>
           <tbody>
-            {profileInfo.education.map((edu) => {
-              return (
-                <tr>
-                  <td>{edu.school}</td>
-                  <td class="hide-sm">{edu.degree}</td>
-                  <td class="hide-sm">{edu.fieldofstudy}</td>
-                  <td class="hide-sm">
-                    {formatDate(edu.from)} -{" "}
-                    {edu.current ? "Current" : formatDate(edu.to)}
-                  </td>
-                  <td>
-                    <button class="btn btn-danger">Delete</button>
-                  </td>
-                </tr>
-              );
-            })}
+            {profileInfo &&
+              profileInfo.education.length &&
+              profileInfo.education.map((edu) => {
+                return (
+                  <tr key={edu._id}>
+                    <td>{edu.school}</td>
+                    <td className="hide-sm">{edu.degree}</td>
+                    <td className="hide-sm">{edu.fieldofstudy}</td>
+                    <td className="hide-sm">
+                      {formatDate(edu.from)} -{" "}
+                      {edu.current ? "Current" : formatDate(edu.to)}
+                    </td>
+                    <td>
+                      <button className="btn btn-danger">Delete</button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
 
-        <div class="my-2">
-          <button class="btn btn-danger">
-            <i class="fas fa-user-minus"></i>
+        <div className="my-2">
+          <button className="btn btn-danger">
+            <i className="fas fa-user-minus"></i>
             Delete My Account
           </button>
         </div>
