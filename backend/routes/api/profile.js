@@ -385,7 +385,7 @@ router.put(
         to,
         current,
         description,
-        id,
+        _id,
       } = req.body;
 
       const education = {};
@@ -396,11 +396,11 @@ router.put(
       if (to) education.to = to;
       if (current) education.current = current;
       if (description) education.description = description;
-      if (id) education.id = id;
+      if (_id) education._id = _id;
 
-      if (id) {
+      if (_id) {
         profile.education = profile.education.map((educationItem) => {
-          if (educationItem.id === id) {
+          if (educationItem.id === _id) {
             educationItem = education;
           }
           return educationItem;

@@ -1,7 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Authenticated from ".";
-import { getProfileInfo } from "../../api-methods";
+import {
+  deleteEducation,
+  deleteExperience,
+  getProfileInfo,
+} from "../../api-methods";
 import { TokenContext } from "../../App";
 import { formatDate } from "../../utils";
 
@@ -10,17 +14,36 @@ const Dashboard = (props) => {
 
   const { token } = useContext(TokenContext);
 
+  const getFullProfile = async () => {
+    const response = await getProfileInfo(token);
+    setProfile(response.data);
+  };
+
   useEffect(() => {
     if (token) {
-      async function getProfileData() {
-        const response = await getProfileInfo(token);
-        setProfile(response.data);
-      }
-      getProfileData();
+      getFullProfile();
     }
   }, [token, setProfile]);
+
   const { basicInfo, profileInfo } = profile;
 
+  const confirmDeleteExperience = async (expId) => {
+    if (window.confirm("Are you sure?")) {
+      const response = await deleteExperience(expId, token);
+      if (response.status === 200) {
+        getFullProfile();
+      }
+    }
+  };
+
+  const confirmDeleteEducation = async (eduId) => {
+    if (window.confirm("Are you sure?")) {
+      const response = await deleteEducation(eduId, token);
+      if (response.status === 200) {
+        getFullProfile();
+      }
+    }
+  };
   return (
     <Authenticated>
       <section className="container">
@@ -70,7 +93,12 @@ const Dashboard = (props) => {
                       >
                         Edit
                       </Link>
-                      <button className="btn btn-danger">Delete</button>
+                      <button
+                        onClick={() => confirmDeleteExperience(exp._id)}
+                        className="btn btn-danger"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );
@@ -109,7 +137,12 @@ const Dashboard = (props) => {
                       >
                         Edit
                       </Link>
-                      <button className="btn btn-danger">Delete</button>
+                      <button
+                        onClick={() => confirmDeleteEducation(edu._id)}
+                        className="btn btn-danger"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );

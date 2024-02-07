@@ -3,6 +3,8 @@ const apis = {
   loginAPI: "/api/users/login", // POST
   getProfileInfoAPI: "/api/profile", // GET
   modifyExperienceAPI: "/api/profile/experience", // PUT
+  deleteExperienceAPI: "/api/profile/experience", // DELETE
   modifyEducationAPI: "/api/profile/education", // PUT
+  deleteEducationAPI: "/api/profile/education", // DELETE
 };
 export default apis;

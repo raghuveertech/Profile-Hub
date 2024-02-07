@@ -7,6 +7,8 @@ const {
   getProfileInfoAPI,
   modifyExperienceAPI,
   modifyEducationAPI,
+  deleteExperienceAPI,
+  deleteEducationAPI,
 } = apis;
 
 // configs
@@ -49,6 +51,11 @@ const putMethod = async (url, body, config) => {
   return response;
 };
 
+const deleteMethod = async (url, config) => {
+  const response = await axios.delete(url, config);
+  return response;
+};
+
 // specific API methods
 export const registerUser = async (body) => {
   const response = await postMethod(registrationAPI, body, config);
@@ -74,10 +81,26 @@ export const modifyExperience = async (body, token) => {
   return response;
 };
 
+export const deleteExperience = async (expId, token) => {
+  const response = await deleteMethod(
+    deleteExperienceAPI + "/" + expId,
+    postAuthConfig(token)
+  );
+  return response;
+};
+
 export const modifyEducation = async (body, token) => {
   const response = await putMethod(
     modifyEducationAPI,
     body,
+    postAuthConfig(token)
+  );
+  return response;
+};
+
+export const deleteEducation = async (eduId, token) => {
+  const response = await deleteMethod(
+    deleteEducationAPI + "/" + eduId,
     postAuthConfig(token)
   );
   return response;
