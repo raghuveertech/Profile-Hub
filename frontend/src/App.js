@@ -9,8 +9,9 @@ import Blog from "./components/Blog";
 import UpdateProfile from "./components/Authenticated/UpdateProfile";
 import Dashboard from "./components/Authenticated/Dashboard";
 import Logout from "./components/Authenticated/Logout";
-import "./styles/App.css";
 import AddEditExperience from "./components/Authenticated/AddEditExperience";
+import AddEditEducation from "./components/Authenticated/AddEditEducation";
+import "./styles/App.css";
 
 export const TokenContext = React.createContext();
 
@@ -48,6 +49,16 @@ const App = () => {
           path="/profile/modify-experience/:expId"
           element={
             <AddEditExperience setProfile={setProfile} profile={profile} />
+          }
+        />
+        <Route
+          path="/profile/modify-education"
+          element={<AddEditEducation setProfile={setProfile} />}
+        />
+        <Route
+          path="/profile/modify-education/:eduId"
+          element={
+            <AddEditEducation setProfile={setProfile} profile={profile} />
           }
         />
         <Route path="/profile/logout" element={<Logout />} />

@@ -103,6 +103,12 @@ const Dashboard = (props) => {
                       {edu.current ? "Current" : formatDate(edu.to)}
                     </td>
                     <td>
+                      <Link
+                        to={`/profile/modify-education/${edu._id}`}
+                        className="btn btn-dark"
+                      >
+                        Edit
+                      </Link>
                       <button className="btn btn-danger">Delete</button>
                     </td>
                   </tr>
