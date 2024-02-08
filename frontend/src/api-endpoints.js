@@ -6,5 +6,6 @@ const apis = {
   deleteExperienceAPI: "/api/profile/experience", // DELETE
   modifyEducationAPI: "/api/profile/education", // PUT
   deleteEducationAPI: "/api/profile/education", // DELETE
+  getAllProfilesAPI: "/api/profile/all", // GET
 };
 export default apis;

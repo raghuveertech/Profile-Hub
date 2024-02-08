@@ -9,6 +9,7 @@ const {
   modifyEducationAPI,
   deleteExperienceAPI,
   deleteEducationAPI,
+  getAllProfilesAPI,
 } = apis;
 
 // configs
@@ -103,5 +104,10 @@ export const deleteEducation = async (eduId, token) => {
     deleteEducationAPI + "/" + eduId,
     postAuthConfig(token)
   );
+  return response;
+};
+
+export const getAllProfiles = async () => {
+  const response = await getMethod(getAllProfilesAPI);
   return response;
 };
