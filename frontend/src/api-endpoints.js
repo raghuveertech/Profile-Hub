@@ -7,5 +7,7 @@ const apis = {
   modifyEducationAPI: "/api/profile/education", // PUT
   deleteEducationAPI: "/api/profile/education", // DELETE
   getAllProfilesAPI: "/api/profile/all", // GET
+  getSingleProfileAPI: "/api/profile", // GET
+  getGitReposAPI: "/api/profile/github", // GET
 };
 export default apis;

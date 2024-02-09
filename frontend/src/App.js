@@ -5,6 +5,7 @@ import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Developers from "./components/Developers";
+import DeveloperDetails from "./components/Developers/DeveloperDetails";
 import Blog from "./components/Blog";
 import UpdateProfile from "./components/Authenticated/UpdateProfile";
 import Dashboard from "./components/Authenticated/Dashboard";
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/developers" element={<Developers />} />
+        <Route path="/developer/:userId" element={<DeveloperDetails />} />
         <Route path="/blog" element={<Blog />} />
         <Route
           path="/profile/dashboard"

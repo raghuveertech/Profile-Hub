@@ -10,6 +10,8 @@ const {
   deleteExperienceAPI,
   deleteEducationAPI,
   getAllProfilesAPI,
+  getSingleProfileAPI,
+  getGitReposAPI,
 } = apis;
 
 // configs
@@ -109,5 +111,15 @@ export const deleteEducation = async (eduId, token) => {
 
 export const getAllProfiles = async () => {
   const response = await getMethod(getAllProfilesAPI);
+  return response;
+};
+
+export const getSingleProfile = async (userId) => {
+  const response = await getMethod(getSingleProfileAPI + "/" + userId);
+  return response;
+};
+
+export const getGitRepos = async (gitHubUserName) => {
+  const response = await getMethod(getGitReposAPI + "/" + gitHubUserName);
   return response;
 };

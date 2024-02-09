@@ -39,7 +39,10 @@ const Developers = () => {
                       {profile.designation} at {profile.company}
                     </p>
                     <p>{profile.location}</p>
-                    <Link to="/profile/" className="btn btn-primary">
+                    <Link
+                      to={`/developer/${profile.user._id}`}
+                      className="btn btn-primary"
+                    >
                       View Profile
                     </Link>
                   </div>
