@@ -5,9 +5,11 @@ const {
   registrationAPI,
   loginAPI,
   getProfileInfoAPI,
+  getExperienceAPI,
   modifyExperienceAPI,
-  modifyEducationAPI,
   deleteExperienceAPI,
+  getEducationAPI,
+  modifyEducationAPI,
   deleteEducationAPI,
   getAllProfilesAPI,
   getSingleProfileAPI,
@@ -75,6 +77,14 @@ export const getProfileInfo = async (token) => {
   return response;
 };
 
+export const getExperience = async (expId, token) => {
+  const response = await getMethod(
+    getExperienceAPI + "/" + expId,
+    getAuthConfig(token)
+  );
+  return response;
+};
+
 export const modifyExperience = async (body, token) => {
   const response = await putMethod(
     modifyExperienceAPI,
@@ -88,6 +98,14 @@ export const deleteExperience = async (expId, token) => {
   const response = await deleteMethod(
     deleteExperienceAPI + "/" + expId,
     postAuthConfig(token)
+  );
+  return response;
+};
+
+export const getEducation = async (eduId, token) => {
+  const response = await getMethod(
+    getEducationAPI + "/" + eduId,
+    getAuthConfig(token)
   );
   return response;
 };

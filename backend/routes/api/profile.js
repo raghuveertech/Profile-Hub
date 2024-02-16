@@ -261,6 +261,31 @@ router.delete("/", authenticate, async (req, res) => {
 });
 
 /*
+  @route     /api/profile/experience/:expId
+  @method    GET - Get experience
+  @accesss   PRIVATE
+*/
+router.get("/experience/:expId", [authenticate], async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const profile = await Profile.findOne({ user: userId });
+
+    if (req.params.expId) {
+      const experience = profile.experience.find((experienceItem) => {
+        if (experienceItem.id === req.params.expId) {
+          return experienceItem;
+        }
+      });
+      return res.json(experience);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+/*
   @route     /api/profile/experience
   @method    PUT - Add/Update experience
   @accesss   PRIVATE
@@ -418,6 +443,31 @@ router.put(
     }
   }
 );
+
+/*
+  @route     /api/profile/education/:eduId
+  @method    GET - Get education
+  @accesss   PRIVATE
+*/
+router.get("/education/:eduId", [authenticate], async (req, res) => {
+  try {
+    const userData = req.userData;
+    const userId = userData.id;
+    const profile = await Profile.findOne({ user: userId });
+
+    if (req.params.eduId) {
+      const education = profile.education.find((educationItem) => {
+        if (educationItem.id === req.params.eduId) {
+          return educationItem;
+        }
+      });
+      return res.json(education);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 /*
   @route     /api/profile/education/:edu_id

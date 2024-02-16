@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Authenticated from ".";
-import { modifyExperience } from "../../api-methods";
+import { getExperience, modifyExperience } from "../../api-methods";
 import Alert from "../layout/Alert";
 import { TokenContext } from "../../App";
 
 const AddEditExperience = (props) => {
-  const { setProfile, profile } = props;
+  const { setProfile } = props;
   const { expId } = useParams();
   const [formData, setFormData] = useState({
     id: "",
@@ -156,27 +156,31 @@ const AddEditExperience = (props) => {
   };
 
   useEffect(() => {
-    if (profile && Object.keys(profile).length !== 0 && expId) {
-      const currentExperience = profile.profileInfo.experience.find((exp) => {
-        return exp._id === expId;
-      });
-      const fromMonth = 1 + moment(currentExperience.from).month();
-      const fromYear = moment(currentExperience.from).year();
-      let toMonth = "";
-      let toYear = "";
-      if (currentExperience.to) {
-        toMonth = 1 + moment(currentExperience.to).month();
-        toYear = moment(currentExperience.to).year();
+    if (expId) {
+      async function getExperienceMethod() {
+        const response = await getExperience(expId, token);
+
+        const currentExperience = response.data;
+
+        const fromMonth = 1 + moment(currentExperience.from).month();
+        const fromYear = moment(currentExperience.from).year();
+        let toMonth = "";
+        let toYear = "";
+        if (currentExperience.to) {
+          toMonth = 1 + moment(currentExperience.to).month();
+          toYear = moment(currentExperience.to).year();
+        }
+        setFormData({
+          ...currentExperience,
+          fromMonth,
+          fromYear,
+          toMonth,
+          toYear,
+        });
       }
-      setFormData({
-        ...currentExperience,
-        fromMonth,
-        fromYear,
-        toMonth,
-        toYear,
-      });
+      getExperienceMethod();
     }
-  }, [profile, expId]);
+  }, [expId]);
 
   const {
     _id,
@@ -193,7 +197,7 @@ const AddEditExperience = (props) => {
 
   const { designationError, companyError, fromMonthError, fromYearError } =
     validationErrors;
-
+  console.log("formData", formData);
   return (
     <Authenticated>
       <section className="container">

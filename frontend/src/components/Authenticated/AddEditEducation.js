@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Authenticated from ".";
-import { modifyEducation } from "../../api-methods";
+import { getEducation, modifyEducation } from "../../api-methods";
 import Alert from "../layout/Alert";
 import { TokenContext } from "../../App";
 
 const AddEditEducation = (props) => {
-  const { setProfile, profile } = props;
+  const { setProfile } = props;
   const { eduId } = useParams();
   const [formData, setFormData] = useState({
     id: "",
@@ -170,27 +170,31 @@ const AddEditEducation = (props) => {
   };
 
   useEffect(() => {
-    if (profile && Object.keys(profile).length !== 0 && eduId) {
-      const currentEducation = profile.profileInfo.education.find((edu) => {
-        return edu._id === eduId;
-      });
-      const fromMonth = 1 + moment(currentEducation.from).month();
-      const fromYear = moment(currentEducation.from).year();
-      let toMonth = "";
-      let toYear = "";
-      if (currentEducation.to) {
-        toMonth = 1 + moment(currentEducation.to).month();
-        toYear = moment(currentEducation.to).year();
+    if (eduId) {
+      async function getEducationMethod() {
+        const response = await getEducation(eduId, token);
+
+        const currentEducation = response.data;
+
+        const fromMonth = 1 + moment(currentEducation.from).month();
+        const fromYear = moment(currentEducation.from).year();
+        let toMonth = "";
+        let toYear = "";
+        if (currentEducation.to) {
+          toMonth = 1 + moment(currentEducation.to).month();
+          toYear = moment(currentEducation.to).year();
+        }
+        setFormData({
+          ...currentEducation,
+          fromMonth,
+          fromYear,
+          toMonth,
+          toYear,
+        });
       }
-      setFormData({
-        ...currentEducation,
-        fromMonth,
-        fromYear,
-        toMonth,
-        toYear,
-      });
+      getEducationMethod();
     }
-  }, [profile, eduId]);
+  }, [eduId]);
 
   const {
     _id,
