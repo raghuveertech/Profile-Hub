@@ -1,29 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Authenticated from ".";
-import {
-  deleteEducation,
-  deleteExperience,
-  getProfileInfo,
-} from "../../api-methods";
+import { deleteEducation, deleteExperience } from "../../api-methods";
 import { TokenContext } from "../../App";
 import { formatDate } from "../../utils";
 
 const Dashboard = (props) => {
-  const { profile, setProfile } = props;
+  const { profile, getFullProfile } = props;
 
   const { token } = useContext(TokenContext);
-
-  const getFullProfile = async () => {
-    const response = await getProfileInfo(token);
-    setProfile(response.data);
-  };
-
-  useEffect(() => {
-    if (token) {
-      getFullProfile();
-    }
-  }, [token, setProfile]);
 
   const { basicInfo, profileInfo } = profile;
 

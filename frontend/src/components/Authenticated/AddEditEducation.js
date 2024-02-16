@@ -194,7 +194,7 @@ const AddEditEducation = (props) => {
       }
       getEducationMethod();
     }
-  }, [eduId]);
+  }, [eduId, token]);
 
   const {
     _id,

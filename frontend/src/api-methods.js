@@ -5,6 +5,7 @@ const {
   registrationAPI,
   loginAPI,
   getProfileInfoAPI,
+  updateProfileInfoAPI,
   getExperienceAPI,
   modifyExperienceAPI,
   deleteExperienceAPI,
@@ -74,6 +75,15 @@ export const loginUser = async (body) => {
 
 export const getProfileInfo = async (token) => {
   const response = await getMethod(getProfileInfoAPI, getAuthConfig(token));
+  return response;
+};
+
+export const updateProfileInfo = async (body, token) => {
+  const response = await postMethod(
+    updateProfileInfoAPI,
+    body,
+    postAuthConfig(token)
+  );
   return response;
 };
 

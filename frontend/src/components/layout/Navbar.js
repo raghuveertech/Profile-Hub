@@ -23,14 +23,14 @@ const Navbar = () => {
             <li>
               |
               <NavLink to="/profile/dashboard" title="Dashboard">
-                <i class="fas fa-user"></i>
-                <span class="hide-sm">Dashboard</span>
+                <i className="fas fa-user"></i>
+                <span className="hide-sm">Dashboard</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/profile/logout" title="Logout">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="hide-sm">Logout</span>
+                <i className="fas fa-sign-out-alt"></i>
+                <span className="hide-sm">Logout</span>
               </NavLink>
             </li>
           </>

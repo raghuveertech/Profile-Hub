@@ -3,6 +3,7 @@ const apis = {
   loginAPI: "/api/users/login", // POST
 
   getProfileInfoAPI: "/api/profile", // GET
+  updateProfileInfoAPI: "/api/profile", // POST
 
   getExperienceAPI: "/api/profile/experience", // GET
   modifyExperienceAPI: "/api/profile/experience", // PUT
