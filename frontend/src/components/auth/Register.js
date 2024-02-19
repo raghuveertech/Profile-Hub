@@ -91,7 +91,7 @@ const Register = () => {
           setSuccess(true);
           setToken(token);
           // redirect to profile dashboard
-          navigate("/");
+          navigate("/profile/dashboard");
         }
       } catch (error) {
         if (error.response.data.errors) {

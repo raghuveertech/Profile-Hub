@@ -41,11 +41,11 @@ const UpdateProfile = (props) => {
       setFormData({
         ...profileInfo,
         skills: profileInfo.skills.join(","),
-        youtube: profileInfo.social.youtube || "",
-        twitter: profileInfo.social.twitter || "",
-        facebook: profileInfo.social.facebook || "",
-        linkedin: profileInfo.social.linkedin || "",
-        instagram: profileInfo.social.instagram || "",
+        youtube: profileInfo?.social?.youtube || "",
+        twitter: profileInfo?.social?.twitter || "",
+        facebook: profileInfo?.social?.facebook || "",
+        linkedin: profileInfo?.social?.linkedin || "",
+        instagram: profileInfo?.social?.instagram || "",
       });
     }
   }, [profileInfo]);
@@ -170,10 +170,10 @@ const UpdateProfile = (props) => {
   } = formData;
 
   const { designationError, companyError, skillsError } = validationErrors;
-
+  console.log(profile);
   return (
     <>
-      {profileInfo ? (
+      {profile ? (
         <Authenticated>
           <section className="container">
             {success && (

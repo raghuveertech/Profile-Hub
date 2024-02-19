@@ -104,7 +104,7 @@ const Dashboard = (props) => {
           </thead>
           <tbody>
             {profileInfo &&
-              profileInfo.education.length &&
+              profileInfo.education.length > 0 &&
               profileInfo.education.map((edu) => {
                 return (
                   <tr key={edu._id}>

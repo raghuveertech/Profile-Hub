@@ -64,9 +64,9 @@ const DeveloperDetails = () => {
                   <i className="fas fa-globe fa-2x"></i>
                 </a>
               ) : null}
-              {profile.social.twitter ? (
+              {profile?.social?.twitter ? (
                 <a
-                  href={profile.social.twitter}
+                  href={profile?.social?.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -74,36 +74,36 @@ const DeveloperDetails = () => {
                 </a>
               ) : null}
 
-              {profile.social.facebook ? (
+              {profile?.social?.facebook ? (
                 <a
-                  href={profile.social.facebook}
+                  href={profile?.social?.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-facebook fa-2x"></i>
                 </a>
               ) : null}
-              {profile.social.linkedin ? (
+              {profile?.social?.linkedin ? (
                 <a
-                  href={profile.social.linkedin}
+                  href={profile?.social?.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-linkedin fa-2x"></i>
                 </a>
               ) : null}
-              {profile.social.youtube ? (
+              {profile?.social?.youtube ? (
                 <a
-                  href={profile.social.youtube}
+                  href={profile?.social?.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-youtube fa-2x"></i>
                 </a>
               ) : null}
-              {profile.social.instagram ? (
+              {profile?.social?.instagram ? (
                 <a
-                  href={profile.social.instagram}
+                  href={profile?.social?.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
