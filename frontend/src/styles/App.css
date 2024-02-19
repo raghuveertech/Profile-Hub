@@ -328,7 +328,10 @@ button {
   position: relative;
 }
 
-.navbar a .subnav {
+.navbar li {
+  position: relative;
+}
+.navbar li .subnav {
   display: none;
   flex-direction: column;
   background-color: var(--dark-color);
@@ -338,11 +341,11 @@ button {
   top: 40px;
 }
 
-.navbar a .fa-caret-down {
+.navbar li .fa-caret-down {
   margin-left: 10px;
 }
 
-.navbar a:hover .subnav {
+.navbar li:hover .subnav {
   display: flex;
 }
 

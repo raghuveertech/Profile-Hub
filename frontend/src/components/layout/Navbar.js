@@ -31,29 +31,29 @@ const Navbar = (props) => {
               <NavLink to="/profile/dashboard" title="Dashboard">
                 <span className="hide-sm">Dashboard</span>
                 <i className="fa-solid fa-caret-down"></i>
-                <ul className="subnav">
-                  <li>
-                    <NavLink
-                      className={"nav-profile-pic"}
-                      to="/profile/dp"
-                      title="Change Profile Picture"
-                    >
-                      {profilePicture ? (
-                        <img src={`/${profilePicture}`} alt={name} />
-                      ) : (
-                        <i className="fas fa-user"></i>
-                      )}
-                      <span className="hide-sm">Change Profile Picture</span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/profile/logout" title="Logout">
-                      <i className="fas fa-sign-out-alt"></i>
-                      <span className="hide-sm">Logout</span>
-                    </NavLink>
-                  </li>
-                </ul>
               </NavLink>
+              <ul className="subnav">
+                <li>
+                  <NavLink
+                    className={"nav-profile-pic"}
+                    to="/profile/dp"
+                    title="Change Profile Picture"
+                  >
+                    {profilePicture ? (
+                      <img src={`/${profilePicture}`} alt={name} />
+                    ) : (
+                      <i className="fas fa-user"></i>
+                    )}
+                    <span className="hide-sm">Change Profile Picture</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/profile/logout" title="Logout">
+                    <i className="fas fa-sign-out-alt"></i>
+                    <span className="hide-sm">Logout</span>
+                  </NavLink>
+                </li>
+              </ul>
             </li>
           </>
         ) : (

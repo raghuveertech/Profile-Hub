@@ -74,7 +74,7 @@ const UpdateProfilePicture = (props) => {
     setProfilePicture(profilePicture);
     setImagePreviewUrl("");
   }, [profileInfo]);
-  console.log("profileInfo", profileInfo);
+
   return (
     <>
       {profileInfo ? (

@@ -197,7 +197,6 @@ const AddEditExperience = (props) => {
 
   const { designationError, companyError, fromMonthError, fromYearError } =
     validationErrors;
-  console.log("formData", formData);
   return (
     <Authenticated>
       <section className="container">
