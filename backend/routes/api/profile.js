@@ -6,6 +6,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 const authenticate = require("./../../middleware/authenticate");
+const uuid = require("uuid");
 
 const router = express.Router();
 
@@ -150,7 +151,11 @@ const storage = multer.diskStorage({
     cb(null, "uploads"); // Files will be stored in the 'uploads' folder
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    const fileNameArray = file.originalname.split(".");
+    const fileNameWithoutExtension = fileNameArray[0];
+    const fileExtension = fileNameArray[1];
+    // Append UUID before the file extension
+    cb(null, `${fileNameWithoutExtension}_${uuid.v4()}.${fileExtension}`);
   },
 });
 
@@ -171,7 +176,7 @@ router.put(
       const profilePictureData = {
         user: userId,
         profilepicture: {
-          filename: req.file.originalname,
+          filename: req.file.originalname + "_" + uuid.v4(),
           path: req.file.path,
           size: req.file.size,
         },

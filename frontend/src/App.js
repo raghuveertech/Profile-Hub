@@ -14,6 +14,7 @@ import AddEditExperience from "./components/Authenticated/AddEditExperience";
 import AddEditEducation from "./components/Authenticated/AddEditEducation";
 import { getProfileInfo } from "./api-methods";
 import "./styles/App.css";
+import UpdateProfilePicture from "./components/Authenticated/UpdateProfilePicture";
 
 export const TokenContext = React.createContext();
 
@@ -40,7 +41,7 @@ const App = () => {
 
   return (
     <TokenContext.Provider value={{ token, setToken }}>
-      <Navbar />
+      <Navbar profile={profile} />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -62,6 +63,16 @@ const App = () => {
           path="/profile/edit"
           element={
             <UpdateProfile
+              profile={profile}
+              setProfile={setProfile}
+              getFullProfile={getFullProfile}
+            />
+          }
+        />
+        <Route
+          path="/profile/dp"
+          element={
+            <UpdateProfilePicture
               profile={profile}
               setProfile={setProfile}
               getFullProfile={getFullProfile}

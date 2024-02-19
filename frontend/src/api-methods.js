@@ -6,6 +6,7 @@ const {
   loginAPI,
   getProfileInfoAPI,
   updateProfileInfoAPI,
+  updateProfilePictureAPI,
   getExperienceAPI,
   modifyExperienceAPI,
   deleteExperienceAPI,
@@ -36,6 +37,14 @@ const postAuthConfig = (token) => {
   return {
     headers: {
       "Content-Type": "application/json",
+      "x-auth-token": token,
+    },
+  };
+};
+
+const postAuthConfigFile = (token) => {
+  return {
+    headers: {
       "x-auth-token": token,
     },
   };
@@ -83,6 +92,15 @@ export const updateProfileInfo = async (body, token) => {
     updateProfileInfoAPI,
     body,
     postAuthConfig(token)
+  );
+  return response;
+};
+
+export const updateProfilePicture = async (body, token) => {
+  const response = await putMethod(
+    updateProfilePictureAPI,
+    body,
+    postAuthConfigFile(token)
   );
   return response;
 };

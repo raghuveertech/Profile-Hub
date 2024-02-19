@@ -4,6 +4,7 @@ const apis = {
 
   getProfileInfoAPI: "/api/profile", // GET
   updateProfileInfoAPI: "/api/profile", // POST
+  updateProfilePictureAPI: "/api/profile/dp", // PUT
 
   getExperienceAPI: "/api/profile/experience", // GET
   modifyExperienceAPI: "/api/profile/experience", // PUT

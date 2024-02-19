@@ -2,8 +2,14 @@ import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../App";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const { token } = useContext(TokenContext);
+  const { profile } = props;
+  let profilePicture = "";
+  let name = "";
+  profilePicture = profile?.profileInfo?.profilepicture?.path;
+  name = profile?.basicInfo?.name;
+
   return (
     <nav className="navbar bg-dark">
       <h1>
@@ -23,14 +29,30 @@ const Navbar = () => {
             <li>
               |
               <NavLink to="/profile/dashboard" title="Dashboard">
-                <i className="fas fa-user"></i>
                 <span className="hide-sm">Dashboard</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/profile/logout" title="Logout">
-                <i className="fas fa-sign-out-alt"></i>
-                <span className="hide-sm">Logout</span>
+                <i className="fa-solid fa-caret-down"></i>
+                <ul className="subnav">
+                  <li>
+                    <NavLink
+                      className={"nav-profile-pic"}
+                      to="/profile/dp"
+                      title="Change Profile Picture"
+                    >
+                      {profilePicture ? (
+                        <img src={`/${profilePicture}`} alt={name} />
+                      ) : (
+                        <i className="fas fa-user"></i>
+                      )}
+                      <span className="hide-sm">Change Profile Picture</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/profile/logout" title="Logout">
+                      <i className="fas fa-sign-out-alt"></i>
+                      <span className="hide-sm">Logout</span>
+                    </NavLink>
+                  </li>
+                </ul>
               </NavLink>
             </li>
           </>
