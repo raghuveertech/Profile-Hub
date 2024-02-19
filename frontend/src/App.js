@@ -56,6 +56,7 @@ const App = () => {
               setProfile={setProfile}
               profile={profile}
               getFullProfile={getFullProfile}
+              setToken={setToken}
             />
           }
         />

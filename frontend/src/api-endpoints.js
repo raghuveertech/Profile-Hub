@@ -18,5 +18,7 @@ const apis = {
   getSingleProfileAPI: "/api/profile", // GET
 
   getGitReposAPI: "/api/profile/github", // GET
+
+  deleteProfileAPI: "/api/profile", // DELETE
 };
 export default apis;

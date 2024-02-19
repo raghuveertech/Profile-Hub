@@ -16,6 +16,7 @@ const {
   getAllProfilesAPI,
   getSingleProfileAPI,
   getGitReposAPI,
+  deleteProfileAPI,
 } = apis;
 
 // configs
@@ -167,5 +168,10 @@ export const getSingleProfile = async (userId) => {
 
 export const getGitRepos = async (gitHubUserName) => {
   const response = await getMethod(getGitReposAPI + "/" + gitHubUserName);
+  return response;
+};
+
+export const deleteProfile = async (token) => {
+  const response = await deleteMethod(deleteProfileAPI, getAuthConfig(token));
   return response;
 };

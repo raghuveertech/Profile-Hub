@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Authenticated from ".";
 import { deleteEducation, deleteExperience } from "../../api-methods";
 import { TokenContext } from "../../App";
 import { formatDate } from "../../utils";
+import { deleteProfile } from "../../api-methods";
 
 const Dashboard = (props) => {
   const { profile, getFullProfile } = props;
 
-  const { token } = useContext(TokenContext);
+  const { token, setToken } = useContext(TokenContext);
 
   const { basicInfo, profileInfo } = profile;
 
@@ -29,6 +30,22 @@ const Dashboard = (props) => {
       }
     }
   };
+
+  const navigate = useNavigate();
+  const confirmDeleteProfile = async (eduId) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your profile? This is not reversible"
+      )
+    ) {
+      const response = await deleteProfile(token);
+      if (response.status === 200) {
+        setToken(null);
+        navigate("/");
+      }
+    }
+  };
+
   return (
     <Authenticated>
       <section className="container">
@@ -136,7 +153,7 @@ const Dashboard = (props) => {
         </table>
 
         <div className="my-2">
-          <button className="btn btn-danger">
+          <button className="btn btn-danger" onClick={confirmDeleteProfile}>
             <i className="fas fa-user-minus"></i>
             Delete My Account
           </button>
