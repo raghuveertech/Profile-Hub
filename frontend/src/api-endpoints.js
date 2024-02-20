@@ -1,24 +1,26 @@
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
+console.log(process.env);
 const apis = {
-  registrationAPI: "/api/users/register", // POST
-  loginAPI: "/api/users/login", // POST
+  registrationAPI: apiUrl + "/api/users/register", // POST
+  loginAPI: apiUrl + "/api/users/login", // POST
 
-  getProfileInfoAPI: "/api/profile", // GET
-  updateProfileInfoAPI: "/api/profile", // POST
-  updateProfilePictureAPI: "/api/profile/dp", // PUT
+  getProfileInfoAPI: apiUrl + "/api/profile", // GET
+  updateProfileInfoAPI: apiUrl + "/api/profile", // POST
+  updateProfilePictureAPI: apiUrl + "/api/profile/dp", // PUT
 
-  getExperienceAPI: "/api/profile/experience", // GET
-  modifyExperienceAPI: "/api/profile/experience", // PUT
-  deleteExperienceAPI: "/api/profile/experience", // DELETE
+  getExperienceAPI: apiUrl + "/api/profile/experience", // GET
+  modifyExperienceAPI: apiUrl + "/api/profile/experience", // PUT
+  deleteExperienceAPI: apiUrl + "/api/profile/experience", // DELETE
 
-  getEducationAPI: "/api/profile/education", // GET
-  modifyEducationAPI: "/api/profile/education", // PUT
-  deleteEducationAPI: "/api/profile/education", // DELETE
+  getEducationAPI: apiUrl + "/api/profile/education", // GET
+  modifyEducationAPI: apiUrl + "/api/profile/education", // PUT
+  deleteEducationAPI: apiUrl + "/api/profile/education", // DELETE
 
-  getAllProfilesAPI: "/api/profile/all", // GET
-  getSingleProfileAPI: "/api/profile", // GET
+  getAllProfilesAPI: apiUrl + "/api/profile/all", // GET
+  getSingleProfileAPI: apiUrl + "/api/profile", // GET
 
-  getGitReposAPI: "/api/profile/github", // GET
+  getGitReposAPI: apiUrl + "/api/profile/github", // GET
 
-  deleteProfileAPI: "/api/profile", // DELETE
+  deleteProfileAPI: apiUrl + "/api/profile", // DELETE
 };
 export default apis;
