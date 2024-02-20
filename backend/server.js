@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const usersRouter = require("./routes/api/users");
 const profileRouter = require("./routes/api/profile");
 const postsRouter = require("./routes/api/posts");
+const cors = require("cors");
 
 const app = express();
 
@@ -12,6 +13,9 @@ connectDB();
 
 // initialise middleware
 app.use(express.json({ extended: false }));
+
+// Use CORS for all routes
+app.use(cors());
 
 // Serving static files from the 'uploads' directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
