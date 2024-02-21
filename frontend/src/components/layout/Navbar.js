@@ -40,7 +40,10 @@ const Navbar = (props) => {
                     title="Change Profile Picture"
                   >
                     {profilePicture ? (
-                      <img src={`/${profilePicture}`} alt={name} />
+                      <img
+                        src={`${process.env.REACT_APP_API_BASE_URL}/${profilePicture}`}
+                        alt={name}
+                      />
                     ) : (
                       <i className="fas fa-user"></i>
                     )}

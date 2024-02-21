@@ -43,7 +43,10 @@ const DeveloperDetails = () => {
             <img
               className="round-img my-1"
               src={`${
-                profile.profilepicture && profile.profilepicture.path
+                profile.profilepicture &&
+                process.env.REACT_APP_API_BASE_URL +
+                  "/" +
+                  profile.profilepicture.path
                   ? `/${profile.profilepicture.path}`
                   : profile.user.avatar
               }`}

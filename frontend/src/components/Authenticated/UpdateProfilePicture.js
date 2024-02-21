@@ -75,6 +75,8 @@ const UpdateProfilePicture = (props) => {
     setImagePreviewUrl("");
   }, [profileInfo]);
 
+  const baseURL = process.env.REACT_APP_API_BASE_URL;
+
   return (
     <>
       {profileInfo ? (
@@ -114,7 +116,11 @@ const UpdateProfilePicture = (props) => {
                   ) : (
                     <>
                       {profilePicture ? (
-                        <img src={`/${profilePicture ? profilePicture : ""}`} />
+                        <img
+                          src={`${baseURL}/${
+                            profilePicture ? profilePicture : ""
+                          }`}
+                        />
                       ) : (
                         <i className="fa-solid fa-user"></i>
                       )}

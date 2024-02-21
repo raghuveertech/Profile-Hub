@@ -28,7 +28,9 @@ const Developers = () => {
                     className="round-img"
                     src={
                       profile.profilepicture && profile.profilepicture.path
-                        ? profile.profilepicture.path
+                        ? process.env.REACT_APP_API_BASE_URL +
+                          "/" +
+                          profile.profilepicture.path
                         : profile.user.avatar
                     }
                     alt={profile.user.name}
